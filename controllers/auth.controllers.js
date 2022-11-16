@@ -69,7 +69,7 @@ const signupGetController =  (req, res, next) => {
 
             req.session.user = foundUser;
 
-            res.render('profile.hbs', foundUser);
+            res.redirect('/private');
 
         })
         .catch(err => {
@@ -81,7 +81,12 @@ const signupGetController =  (req, res, next) => {
 
 const profileGetController = (req, res, next) => {
     console.log(req.session);
-    res.render('profile.hbs', req.session.user);
+    res.render('private.hbs', req.session.user);
+}
+
+const mainGetController = (req, res, next) => {
+    console.log(req.session);
+    res.render('main.hbs', req.session.user);
 }
 
   module.exports = {
@@ -89,5 +94,6 @@ const profileGetController = (req, res, next) => {
     signupPostController,
     loginGetController,
     loginPostController,
-    profileGetController
+    profileGetController,
+    mainGetController
   };
