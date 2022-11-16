@@ -1,44 +1,27 @@
-const User = require("../models/User.model");
-const bcryptjs = require('bcryptjs');
+
 
 const router = require("express").Router();
+
+const { signupGetController,
+        signupPostController,
+        loginGetController,
+        loginPostController,
+        profileGetController
+ } = require('../controllers/auth.controllers');
 
 /* GET home page */
 router.get("/", (req, res, next) => {
   res.render("index");
 });
 
-router.get('/signup', (req, res, next) => {
-  res.render('signup.hbs');
-});
+router.get('/signup', signupGetController);
 
-router.post('/signup', (req, res, next) => {
-  console.log(req.body);
-  if(!req.body.username || !req.body.password){
-    res.send('sorry u forgot something');
-    return;
-}
-User.findOne({ username: req.body.username })
-  .then(foundUser => {
-    if(foundUser){
-      res.send('user already exists');
-      return;
-    }
+router.post('/signup', signupPostController);
 
-    const myHashedPassword = bcryptjs.hashSync(req.body.password);
+router.get('/login', loginGetController);
 
-    return User.create({
-      username: req.body.username,
-      password: myHashedPassword
-    })
-  })
+router.post('/login', loginPostController);
 
-  .then(createdUser => {
-    res.send(createdUser);
-  })
-  .catch(err => {
-    res.send(err);
-  });
-});
+router.get('/profile', profileGetController);
 
 module.exports = router;
